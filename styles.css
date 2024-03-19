@@ -1,0 +1,11 @@
+img{
+    width:350px;
+    height:250px;
+}
+div {
+     margin-top: 10px;
+}
+select{
+    color: rgb(74, 38, 219);
+    background-color: antiquewhite;
+}
