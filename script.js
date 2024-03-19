@@ -1,50 +1,63 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('container');
-    const category = document.getElementById('category');
-    const sort = document.getElementById('sort');
-
-    let objects = [];
-    // Fetch data from API and display products
-    async function fetchData() {
-    
-            let response = await fetch('https://fakestoreapi.com/products');
-            let data = await response.json();
-            objects = data;
-            displayProducts(objects);
-    }
-
-    // Display products on the page
-    function displayProducts(products) {
-        container.innerHTML = "";
-        products.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.innerHTML = `
-                <img src="${product.image}" alt="${product.title}">
-                <h3>${product.title}</h3>
-                <p>Price: $${product.price}</p>
-                <p>Count: ${product.rating.count}</p>
-                <p>Rating: ${product.rating.rate}</p>
-            `;
-            container.appendChild(productCard);
-        });
-    }
-    sort.addEventListener('change', () => {
-        const sortType = sort.value;
-        const sortedProducts =objects;
-        if (sortType === 'asc') {
-            sortedProducts.sort((a, b) => a.price - b.price);
-        } else if (sortType === 'desc') {
-            sortedProducts.sort((a, b) => b.price - a.price);
+document.addEventListener('DOMContentLoaded', function() {
+    const productsContainer = document.getElementById('products');
+    const sortSelect = document.getElementById('sort');
+    const categorySelect = document.getElementById('category');
+  
+    let productsData = []; // To store the original product data
+  
+    // Fetch data from the API
+    fetch('https://fakestoreapi.com/products')
+      .then(response => response.json())
+      .then(products => {
+        productsData = products; // Store original product data
+        renderProducts(products);
+  
+        // Event listener for sorting and filtering changes
+        function updateProducts() {
+          const filteredProducts = filterProducts(productsData, categorySelect.value);
+          const sortedProducts = sortProducts(filteredProducts, sortSelect.value);
+          renderProducts(sortedProducts);
         }
-        displayProducts(sortedProducts);
-    });
-
-    filter.addEventListener('change', () => {
-        const selected = category.value;
-        const filteredProducts = selected
-            ? objects.filter(product => product.category === selected)
-            : objects;
-        displayProducts(filteredProducts);
-    });
-    fetchData();
-});
+  
+        // Event listeners for sort and filter selects
+        sortSelect.addEventListener('change', updateProducts);
+        categorySelect.addEventListener('change', updateProducts);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+  
+    // Function to render products
+    function renderProducts(products) {
+      productsContainer.innerHTML = '';
+      products.forEach(product => {
+        const productElement = document.createElement('div');
+        productElement.classList.add('product');
+        productElement.innerHTML = `
+          <img src="${product.image}" alt="${product.title}">
+          <h3>${product.title}</h3>
+          <p>Price: $${product.price}</p>
+          <p>Category: ${product.category}</p>
+        `;
+        productsContainer.appendChild(productElement);
+      });
+    }
+  
+    // Function to sort products by price
+    function sortProducts(products, sortOrder) {
+      return products.slice().sort((a, b) => {
+        if (sortOrder === 'asc') {
+          return a.price - b.price;
+        } else {
+          return b.price - a.price;
+        }
+      });
+    }
+  
+    // Function to filter products by category
+    function filterProducts(products, category) {
+      if (!category) {
+        return products;
+      }
+      return products.filter(product => product.category === category);
+    }
+  });
+  
