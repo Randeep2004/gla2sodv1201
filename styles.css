@@ -6,6 +6,14 @@ div {
      margin-top: 10px;
 }
 select{
-    color: rgb(74, 38, 219);
-    background-color: antiquewhite;
+    border: 20px;
+    border-color: brown;
+
+   color: rgb(74, 38, 219);
+    background-color: rgb(153, 198, 76);
+}
+body{
+background-color:antiquewhite ;
+justify-items: unset;
+align-items: center;
 }
