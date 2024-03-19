@@ -2,10 +2,11 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #E7E8D1;
   }
   
   header {
-    background-color: #333;
+    background-color:#B85042;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -21,15 +22,15 @@ body {
   }
   
   .product {
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 3px solid #2c2929;
+    border-radius: 18px;
     padding: 10px;
     margin-bottom: 10px;
   }
   
   .product img {
-    width: 100px;
-    height: 100px;
+    width: 350px;
+    height: 200px;
     object-fit: cover;
     margin-bottom: 10px;
   }
